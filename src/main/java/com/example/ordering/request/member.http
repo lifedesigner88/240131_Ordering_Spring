@@ -1,0 +1,12 @@
+###
+POST http://localhost:8080/member/create
+Content-Type: application/json
+
+{
+  "name" : "sejong",
+  "email" :"Tes2t@name.com",
+  "password" : "12345"
+}
+
+
+
