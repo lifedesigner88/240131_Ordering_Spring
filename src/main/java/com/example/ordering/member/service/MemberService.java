@@ -43,12 +43,9 @@ public class MemberService {
                 .collect(Collectors.toList());
     }
 
-
-
     public Member create(MemberCreateReqDto member) {
         return memberRepo.save (
                 Member.toEntity(member, passEnco.encode(member.getPassword())));
-
     }
 
     public Member login(LoginReqDto reqDto) throws IllegalArgumentException {

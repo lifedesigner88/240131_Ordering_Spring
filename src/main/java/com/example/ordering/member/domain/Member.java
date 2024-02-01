@@ -46,7 +46,6 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Ordering> orderings;
 
-
     public static Member toEntity(MemberCreateReqDto member, String Password){
         Address address = new Address(
                 member.getCity(),
@@ -54,14 +53,13 @@ public class Member {
                 member.getZipcode()
         );
 
-        Member newMember = Member.builder()
+        return Member.builder()
                 .name(member.getName())
                 .email(member.getEmail())
                 .password(Password)
                 .address(address)
                 .role(Role.USER)
                 .build();
-        return newMember;
     }
 
 
