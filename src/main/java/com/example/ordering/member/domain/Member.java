@@ -42,7 +42,7 @@ public class Member {
     private Role role;
 
 
-
+//    Relation
     @OneToMany(mappedBy = "member")
     private List<Ordering> orderings;
 
@@ -52,7 +52,6 @@ public class Member {
                 member.getStreet(),
                 member.getZipcode()
         );
-
         return Member.builder()
                 .name(member.getName())
                 .email(member.getEmail())
@@ -62,8 +61,7 @@ public class Member {
                 .build();
     }
 
-
-// Time
+//    Time
     @CreationTimestamp
     private LocalDateTime createdTime;
     @UpdateTimestamp

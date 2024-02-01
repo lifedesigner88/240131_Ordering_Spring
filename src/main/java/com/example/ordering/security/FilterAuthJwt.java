@@ -33,10 +33,8 @@ public class FilterAuthJwt extends GenericFilter {
             // check if the header is null or doesn't start with "Bearer "
 
             if(token != null) {
-
                 if (!token.startsWith("Bearer "))
                     throw new AuthenticationServiceException("The token is invalid or not present.");
-
                 token = token.substring(7);
 
 //                토큰 검증 및 claims 추출

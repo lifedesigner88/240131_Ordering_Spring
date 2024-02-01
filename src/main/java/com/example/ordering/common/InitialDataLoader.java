@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class InitialDataLoader implements CommandLineRunner {
-
 //    CommandLineRunner를 통해 스프링 빈으로 등록되는 시점에 run 메서드 실행
 
     private final MemberRepository memberRepo;
@@ -24,7 +23,6 @@ public class InitialDataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
         if(memberRepo.findByEmail("admin@test.com").isEmpty()){
             Member admin =  Member.builder()
                     .name("root")
@@ -34,7 +32,5 @@ public class InitialDataLoader implements CommandLineRunner {
                     .build();
             memberRepo.save(admin);
         }
-
-
     }
 }

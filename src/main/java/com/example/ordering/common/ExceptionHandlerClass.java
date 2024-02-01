@@ -26,6 +26,4 @@ public class ExceptionHandlerClass {
         log.error("Entity not found : " + ex.getMessage());
         return makeMessage(HttpStatus.NOT_ACCEPTABLE, "잘못된 접근 입니다. ");
     }
-
-
 }

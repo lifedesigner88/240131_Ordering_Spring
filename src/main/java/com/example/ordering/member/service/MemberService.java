@@ -28,7 +28,6 @@ public class MemberService {
         this.passEnco = passEnco;
     }
 
-
     public MemberResponseDto findMyInfo(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
@@ -51,14 +50,8 @@ public class MemberService {
     public Member login(LoginReqDto reqDto) throws IllegalArgumentException {
         Member member = memberRepo.findByEmail(reqDto.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
-
         if (!passEnco.matches(reqDto.getPassword(), member.getPassword()))
             throw new IllegalArgumentException("비밀번호 불일치");
-
-
         return member;
-
     }
-
-
 }

@@ -62,11 +62,9 @@ public class MemberController {
     }
 
 
-
     @PostMapping("/doLogin")
     public ResponseEntity<ResponseDto> memberLogin(@Valid @RequestBody LoginReqDto dto){
         Member member = service.login(dto);
-
         String jwtToken = tokenProvider.createdToken(
                 member.getEmail(),
                 member.getRole().toString());
@@ -86,6 +84,4 @@ public class MemberController {
                 HttpStatus.OK
         );
     }
-
-
 }

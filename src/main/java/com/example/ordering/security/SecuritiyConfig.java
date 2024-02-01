@@ -20,13 +20,10 @@ public class SecuritiyConfig {
     public SecuritiyConfig(@Autowired FilterAuthJwt authFilter) {
         this.authFilter = authFilter;
     }
-
     @Bean
     public PasswordEncoder passwordEncoder(){
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
-
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity     // xss와 csrf의 차이 정리 필요.
@@ -58,3 +55,7 @@ public class SecuritiyConfig {
                 .build();
     }
 }
+
+
+
+
