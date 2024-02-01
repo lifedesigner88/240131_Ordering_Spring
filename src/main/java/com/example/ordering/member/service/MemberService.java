@@ -1,16 +1,20 @@
 package com.example.ordering.member.service;
 
-import com.example.ordering.member.domain.Address;
 import com.example.ordering.member.domain.Member;
-import com.example.ordering.member.domain.Role;
 import com.example.ordering.member.dto.LoginReqDto;
 import com.example.ordering.member.dto.MemberCreateReqDto;
+import com.example.ordering.member.dto.MemberResponseDto;
 import com.example.ordering.member.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -24,23 +28,26 @@ public class MemberService {
         this.passEnco = passEnco;
     }
 
+
+    public MemberResponseDto findMyInfo(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Member member = memberRepo.findByEmail(email).orElseThrow(EntityNotFoundException::new);
+        return MemberResponseDto.toMemberResponseDto(member);
+    }
+
+    public List<MemberResponseDto> findAll(){
+        List<Member> members = memberRepo.findAll();
+        return members.stream()
+                .map(MemberResponseDto::toMemberResponseDto)
+                .collect(Collectors.toList());
+    }
+
+
+
     public Member create(MemberCreateReqDto member) {
-
-        Address address = new Address(
-                member.getCity(),
-                member.getStreet(),
-                member.getZipcode()
-        );
-
-        Member newMember = Member.builder()
-                .name(member.getName())
-                .email(member.getEmail())
-                .password(passEnco.encode(member.getPassword()))
-                .address(address)
-                .role(Role.USER)
-                .build();
-
-        return memberRepo.save(newMember);
+        return memberRepo.save (
+                Member.toEntity(member, passEnco.encode(member.getPassword())));
 
     }
 

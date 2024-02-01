@@ -16,8 +16,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecuritiyConfig {
 
-    private final JwtAuthFilter authFilter;
-    public SecuritiyConfig(@Autowired JwtAuthFilter authFilter) {
+    private final FilterAuthJwt authFilter;
+    public SecuritiyConfig(@Autowired FilterAuthJwt authFilter) {
         this.authFilter = authFilter;
     }
 
@@ -32,23 +32,28 @@ public class SecuritiyConfig {
         return httpSecurity     // xss와 csrf의 차이 정리 필요.
                 .csrf()
                 .disable()
+
                 .cors()
                 .and()
+
                 .httpBasic()
                 .disable()
+
                 .authorizeRequests()
-                .antMatchers(
-                        "/member/create",
-                        "/doLogin",
-                        "/items",
-                        "/item/image/**")
-                .permitAll()
+                    .antMatchers(
+                            "/member/create",
+                            "/doLogin",
+                            "/items",
+                            "/item/image/**")
+                    .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
+
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

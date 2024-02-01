@@ -1,6 +1,7 @@
 package com.example.ordering.member.domain;
 
 
+import com.example.ordering.member.dto.MemberCreateReqDto;
 import com.example.ordering.ordering.domain.Ordering;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,7 +47,22 @@ public class Member {
     private List<Ordering> orderings;
 
 
+    public static Member toEntity(MemberCreateReqDto member, String Password){
+        Address address = new Address(
+                member.getCity(),
+                member.getStreet(),
+                member.getZipcode()
+        );
 
+        Member newMember = Member.builder()
+                .name(member.getName())
+                .email(member.getEmail())
+                .password(Password)
+                .address(address)
+                .role(Role.USER)
+                .build();
+        return newMember;
+    }
 
 
 // Time
