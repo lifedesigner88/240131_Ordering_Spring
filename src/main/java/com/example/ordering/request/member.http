@@ -4,9 +4,17 @@ Content-Type: application/json
 
 {
   "name" : "sejong",
-  "email" :"Tes22t@name.com",
+  "email" :"Test@name.com1",
   "password" : "12345"
 }
 
 
 
+###
+POST http://localhost:8080/doLogin
+Content-Type: application/json
+
+{
+  "email" :"Test@name.com1",
+  "password" : "12345"
+}
