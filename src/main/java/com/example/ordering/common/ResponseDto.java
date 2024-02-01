@@ -11,6 +11,6 @@ public class ResponseDto {
 
     private HttpStatus status;
     private String message;
-    private Object dataId;
+    private Object result;
 
 }
