@@ -1,6 +1,5 @@
 package com.example.ordering.item.domain;
 
-
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -12,12 +11,12 @@ import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Item {
 
     @Id
@@ -30,9 +29,11 @@ public class Item {
     private int price;
     private int stockQuantity;
 
+    @Setter
     private String imagePath;
-    private String delYn;
 
+    @Builder.Default
+    private String delYn = "N";
 
     public void delete() {
         this.delYn = "Y";
