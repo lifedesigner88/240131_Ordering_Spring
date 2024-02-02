@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ public class ItemController {
         this.service = service;
     }
 
+//    Create
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/item/create")
     public ResponseEntity<CommonResponse> itemCreate(ItemReqDto itemReqDto)  {
@@ -37,25 +39,46 @@ public class ItemController {
         );
     }
 
-
-
+//    Read
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/items")
-    public List<ItemResDto> items( ItemSearchDto itemSerchDto, Pageable pageable){
-        return null;
+    public List<ItemResDto> items(ItemSearchDto SerchDto, Pageable pageable){
+        return service.getItems(SerchDto, pageable);
     }
 
 
+    @GetMapping("/item/{id}/image")
+    public ResponseEntity<Resource> getImage(@PathVariable Long id){
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(service.getImage(id));
+
+    }
+
+
+
+//    Update
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping("/items/{id}/image")
-    public Resource getImage (@PathVariable Long id, ItemSearchDto itemSerchDto, Pageable pageable){
-        return null;
+    @PostMapping("/item/{id}/update")
+    public ResponseEntity<CommonResponse> itemUpdate(@PathVariable Long id,
+                                                     ItemReqDto itemReqDto){
+
+        return ResponseEntity.ok()
+                .body(
+                        new CommonResponse(
+                                HttpStatus.OK,
+                                "Item Successfully Created",
+                                service.updateItem(id, itemReqDto)
+                        )
+                );
+
     }
 
-
+//    Delete
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/item/{id}/delete")
     public ResponseEntity<CommonResponse> Delete(@PathVariable("id") Long id) {
+
         return new ResponseEntity<>(
                 new CommonResponse(
                         HttpStatus.OK,
@@ -65,7 +88,6 @@ public class ItemController {
                 HttpStatus.OK
         );
     }
-
 
 
 }

@@ -41,7 +41,7 @@ public class SecuritiyConfig {
                             "/member/create",
                             "/doLogin",
                             "/items",
-                            "/item/image/**")
+                            "/item/*/image")
                     .permitAll()
                 .anyRequest()
                 .authenticated()

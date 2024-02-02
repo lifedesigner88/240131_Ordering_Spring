@@ -1,5 +1,6 @@
 package com.example.ordering.item.domain;
 
+import com.example.ordering.item.dto.ItemReqDto;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -42,6 +43,15 @@ public class Item {
     public void updateStockQuantity(int quantity) {
         this.stockQuantity += quantity;
     }
+
+    public void update(ItemReqDto itemReqDto){
+        this.name = itemReqDto.getName();
+        this.category = itemReqDto.getCategory();
+        this.price = itemReqDto.getPrice();
+        this.stockQuantity = itemReqDto.getStockQuantity();
+    }
+
+
 
 
     //    Time

@@ -1,7 +1,7 @@
 package com.example.ordering.ordering.domain;
 
 import com.example.ordering.member.domain.Member;
-import lombok.AllArgsConstructor;
+import com.example.ordering.orderItem.domain.OrderItem;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,11 +10,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class Ordering {
 
@@ -22,16 +22,29 @@ public class Ordering {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus = OrderStatus.ORDERED;
 
 
 
+//    Relation
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private Member member;
 
+    @OneToMany(mappedBy = "ordering", cascade = CascadeType.PERSIST)
+    private final List<OrderItem> orderItems = new ArrayList<>();
 
 
-    // Time
+
+//    Funtcion
+    @Builder
+    public Ordering(Member member) {this.member = member;}
+    public void cancleOrder(){this.orderStatus = OrderStatus.CANCELED;}
+
+
+
+//    Time
     @CreationTimestamp
     private LocalDateTime createdTime;
     @UpdateTimestamp

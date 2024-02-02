@@ -19,7 +19,8 @@ public class ItemResDto {
 
     private int price;
     private int stockQuantity;
-
     private String imagePath;
+
+
 
 }
