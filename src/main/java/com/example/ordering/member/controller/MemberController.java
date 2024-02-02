@@ -1,6 +1,6 @@
 package com.example.ordering.member.controller;
 
-import com.example.ordering.common.ResponseDto;
+import com.example.ordering.common.CommonResponse;
 import com.example.ordering.member.domain.Member;
 import com.example.ordering.member.dto.LoginReqDto;
 import com.example.ordering.member.dto.MemberCreateReqDto;
@@ -10,6 +10,7 @@ import com.example.ordering.security.TokenProviderJwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,17 +24,18 @@ public class MemberController {
     private final MemberService service;
     private final TokenProviderJwt tokenProvider;
 
-    public MemberController(@Autowired MemberService service,  TokenProviderJwt tokenProvider) {
+    @Autowired
+    public MemberController( MemberService service,  TokenProviderJwt tokenProvider) {
         this.service = service;
         this.tokenProvider = tokenProvider;
     }
 
 
     @PostMapping("/member/create")
-    public ResponseEntity<ResponseDto> memberCreate(@Valid @RequestBody MemberCreateReqDto dto){
+    public ResponseEntity<CommonResponse> memberCreate(@Valid @RequestBody MemberCreateReqDto dto){
         Member member = service.create(dto);
         return new ResponseEntity<>(
-                new ResponseDto(
+                new CommonResponse(
                         HttpStatus.CREATED,
                         "member successfully created",
                         member.getId()
@@ -42,6 +44,7 @@ public class MemberController {
         );
     }
 
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @GetMapping("/members")
     public List<MemberResponseDto> members(){
         return service.findAll();
@@ -63,7 +66,7 @@ public class MemberController {
 
 
     @PostMapping("/doLogin")
-    public ResponseEntity<ResponseDto> memberLogin(@Valid @RequestBody LoginReqDto dto){
+    public ResponseEntity<CommonResponse> memberLogin(@Valid @RequestBody LoginReqDto dto){
         Member member = service.login(dto);
         String jwtToken = tokenProvider.createdToken(
                 member.getEmail(),
@@ -76,7 +79,7 @@ public class MemberController {
             info.put("token", jwtToken);
 
         return new ResponseEntity<>(
-                new ResponseDto(
+                new CommonResponse(
                         HttpStatus.OK,
                         "member successfully logined",
                         info

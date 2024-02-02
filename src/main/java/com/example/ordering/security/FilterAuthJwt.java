@@ -2,6 +2,7 @@ package com.example.ordering.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +25,10 @@ import static com.example.ordering.common.ErrResponseMessage.makeMessage;
 
 @Component
 public class FilterAuthJwt extends GenericFilter {
+
+    @Value("${jwt.secretKey}")
+    private String secretKey;
+    
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain filter)
             throws IOException, ServletException {
@@ -39,7 +44,7 @@ public class FilterAuthJwt extends GenericFilter {
 
 //                토큰 검증 및 claims 추출
                 Claims claims = Jwts.parser()
-                        .setSigningKey("sejong")
+                        .setSigningKey(secretKey)
                         .parseClaimsJws(token)
                         .getBody();
 

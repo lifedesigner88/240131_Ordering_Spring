@@ -20,3 +20,10 @@ spring:
       ddl-auto: create
     show-sql: true
 
+jwt:
+  expiration: 30 #30분
+  secretKey: sejong
+
+
+
+
