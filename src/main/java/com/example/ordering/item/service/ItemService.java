@@ -136,7 +136,8 @@ public class ItemService {
         Long itemId = itemRepo.save(itemTemp).getId();
         Path path = Paths
                 .get(
-                        "C:\\Users\\Playdata\\IdeaProjects\\Ordering\\src\\main\\resources\\temp",
+//                        "C:\\Users\\Playdata\\IdeaProjects\\Ordering\\src\\main\\resources\\temp",
+                        "C:\\Users\\LifeD\\IdeaProjects\\SpringBoot_Book\\240131_Ordering_Spring\\src\\main\\resources\\temp",
                         itemId + "_"+ fileName);
 
         itemTemp.setImagePath(path.toString());
