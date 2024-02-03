@@ -1,13 +1,13 @@
 package com.example.ordering.item.dto;
 
 
+import com.example.ordering.item.domain.Item;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ItemResDto {
@@ -21,6 +21,14 @@ public class ItemResDto {
     private int stockQuantity;
     private String imagePath;
 
+    public ItemResDto(Item item){
+        this.id = item.getId();
+        this.name = item.getName();
+        this.price = item.getPrice();
+        this.category = item.getCategory();
+        this.stockQuantity = item.getStockQuantity();
+        this.imagePath = item.getImagePath();
+    }
 
 
 }

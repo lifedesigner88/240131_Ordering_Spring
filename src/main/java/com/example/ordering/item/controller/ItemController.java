@@ -43,9 +43,8 @@ public class ItemController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/items")
     public List<ItemResDto> items(ItemSearchDto SerchDto, Pageable pageable){
-        return service.getItems(SerchDto, pageable);
+        return service.SerchItems(SerchDto, pageable);
     }
-
 
     @GetMapping("/item/{id}/image")
     public ResponseEntity<Resource> getImage(@PathVariable Long id){
@@ -54,7 +53,6 @@ public class ItemController {
                 .body(service.getImage(id));
 
     }
-
 
 
 //    Update
