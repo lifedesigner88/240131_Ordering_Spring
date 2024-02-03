@@ -40,21 +40,15 @@ public class ItemService {
     }
 
 
-//    Create
+    //    Create
     public Item createItem(ItemReqDto itemReqDto)  {
+        Item itemTemp = new Item(itemReqDto);
         MultipartFile multipartFile = itemReqDto.getItemImage();
-        String fileName = multipartFile.getOriginalFilename();
-
-        Item itemTemp = Item.builder()
-                .name(itemReqDto.getName())
-                .category(itemReqDto.getCategory())
-                .price(itemReqDto.getPrice())
-                .stockQuantity(itemReqDto.getStockQuantity())
-                .build();
-        savefile(itemTemp, multipartFile, fileName);
-
+        savefile(itemTemp, multipartFile);
         return itemRepo.save(itemTemp);
     }
+
+
     public List<ItemResDto> getItems(ItemSearchDto searchDto, Pageable pageable){
         // 검색을 위해 Specification 객체를 사용
         // Specification 객체는 복잡한 쿼리를 명세를 이용한 정의를 하여 쉽게 생성
@@ -70,7 +64,6 @@ public class ItemService {
                 List<Predicate> predicates = new ArrayList<>();
                 predicates.add(criteriaBuilder
                         .equal(root.get("delYn"), "N"));
-
                 if (searchDto.getName() != null)
                     predicates.add(criteriaBuilder
                             .like(root.get("name"), "%" + searchDto.getName() + "%"));
@@ -82,22 +75,13 @@ public class ItemService {
                 for(int i = 0; i < predicates.size(); i++)
                     predicateArr[i] = predicates.get(i);
                 return criteriaBuilder.and(predicateArr);
-
             }
-
         };
 
         Page<Item> items = itemRepo.findAll(spec, pageable);
         return items.stream()
-                .map(item -> ItemResDto.builder()
-                        .id(item.getId())
-                        .name(item.getName())
-                        .category(item.getCategory())
-                        .price(item.getPrice())
-                        .stockQuantity(item.getStockQuantity())
-                        .build())
+                .map(ItemResDto::new)
                 .collect(Collectors.toList());
-
     }
 
 
@@ -114,36 +98,40 @@ public class ItemService {
     }
 
 
-//    Update
+
+    //    Update
     public Item updateItem(Long id, ItemReqDto itemReqDto) {
         Item itemTemp = itemRepo.findById(id).orElseThrow(EntityNotFoundException::new);
         MultipartFile multipartFile = itemReqDto.getItemImage();
-        String fileName = multipartFile.getOriginalFilename();
         itemTemp.update(itemReqDto);
-        savefile(itemTemp, multipartFile, fileName);
+        savefile(itemTemp, multipartFile);
         return itemRepo.save(itemTemp);
     }
 
-//    Delete
+    //    Delete
     public Object delete(Long id) {
         Item item = itemRepo.findById(id).orElseThrow();
-        item.setDelYn("Y");
+        item.delete();
         return item;
     }
 
-//    duplicated funtion
-    private void savefile(Item itemTemp, MultipartFile multipartFile, String fileName) {
+
+
+    //    duplicated funtion
+    private void savefile(Item itemTemp, MultipartFile multipartFile) {
+        String fileName = multipartFile.getOriginalFilename();
         Long itemId = itemRepo.save(itemTemp).getId();
         Path path = Paths
                 .get(
 //                        "C:\\Users\\Playdata\\IdeaProjects\\Ordering\\src\\main\\resources\\temp",
                         "C:\\Users\\LifeD\\IdeaProjects\\SpringBoot_Book\\240131_Ordering_Spring\\src\\main\\resources\\temp",
                         itemId + "_"+ fileName);
-
         itemTemp.setImagePath(path.toString());
         try {
             byte[] bytes = multipartFile.getBytes();
-            Files.write(path, bytes, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+            Files.write(path, bytes,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.WRITE);
         } catch (IOException e) {
             throw new IllegalArgumentException("image not available");
         }

@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Item {
@@ -32,26 +30,21 @@ public class Item {
 
     @Setter
     private String imagePath;
-
-    @Builder.Default
     private String delYn = "N";
 
-    public void delete() {
-        this.delYn = "Y";
-    }
-
+    public void delete() {this.delYn = "Y";}
     public void updateStockQuantity(int quantity) {
         this.stockQuantity += quantity;
     }
 
-    public void update(ItemReqDto itemReqDto){
-        this.name = itemReqDto.getName();
-        this.category = itemReqDto.getCategory();
-        this.price = itemReqDto.getPrice();
-        this.stockQuantity = itemReqDto.getStockQuantity();
+    public Item(ItemReqDto itemReqDto) {dtoToItem(itemReqDto);}
+    public void update(ItemReqDto itemReqDto){dtoToItem(itemReqDto);}
+    public void dtoToItem(ItemReqDto dto){
+        this.name = dto.getName();
+        this.category = dto.getCategory();
+        this.price = dto.getPrice();
+        this.stockQuantity = dto.getStockQuantity();
     }
-
-
 
 
     //    Time
