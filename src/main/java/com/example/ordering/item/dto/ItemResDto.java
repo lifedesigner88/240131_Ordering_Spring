@@ -29,6 +29,4 @@ public class ItemResDto {
         this.stockQuantity = item.getStockQuantity();
         this.imagePath = item.getImagePath();
     }
-
-
 }

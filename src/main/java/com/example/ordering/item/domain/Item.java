@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Item {
@@ -31,9 +30,8 @@ public class Item {
 
     @Setter
     private String imagePath;
-
-    @Builder.Default
     private String delYn = "N";
+
     public void delete() {this.delYn = "Y";}
     public void updateStockQuantity(int quantity) {
         this.stockQuantity += quantity;
@@ -47,6 +45,7 @@ public class Item {
         this.price = dto.getPrice();
         this.stockQuantity = dto.getStockQuantity();
     }
+
 
     //    Time
     @CreationTimestamp

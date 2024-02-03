@@ -40,7 +40,7 @@ public class ItemService {
     }
 
 
-//    Create
+    //    Create
     public Item createItem(ItemReqDto itemReqDto)  {
         Item itemTemp = new Item(itemReqDto);
         MultipartFile multipartFile = itemReqDto.getItemImage();
@@ -62,7 +62,6 @@ public class ItemService {
                                          CriteriaBuilder criteriaBuilder) {
 
                 List<Predicate> predicates = new ArrayList<>();
-
                 predicates.add(criteriaBuilder
                         .equal(root.get("delYn"), "N"));
                 if (searchDto.getName() != null)
@@ -78,6 +77,7 @@ public class ItemService {
                 return criteriaBuilder.and(predicateArr);
             }
         };
+
         Page<Item> items = itemRepo.findAll(spec, pageable);
         return items.stream()
                 .map(ItemResDto::new)
@@ -98,7 +98,8 @@ public class ItemService {
     }
 
 
-//    Update
+
+    //    Update
     public Item updateItem(Long id, ItemReqDto itemReqDto) {
         Item itemTemp = itemRepo.findById(id).orElseThrow(EntityNotFoundException::new);
         MultipartFile multipartFile = itemReqDto.getItemImage();
@@ -107,7 +108,7 @@ public class ItemService {
         return itemRepo.save(itemTemp);
     }
 
-//    Delete
+    //    Delete
     public Object delete(Long id) {
         Item item = itemRepo.findById(id).orElseThrow();
         item.delete();
@@ -116,7 +117,7 @@ public class ItemService {
 
 
 
-//    duplicated funtion
+    //    duplicated funtion
     private void savefile(Item itemTemp, MultipartFile multipartFile) {
         String fileName = multipartFile.getOriginalFilename();
         Long itemId = itemRepo.save(itemTemp).getId();
