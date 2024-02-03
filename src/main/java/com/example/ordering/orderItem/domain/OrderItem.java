@@ -1,14 +1,19 @@
 package com.example.ordering.orderItem.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import com.example.ordering.ordering.domain.Ordering;
+
+import javax.persistence.*;
 
 @Entity
 public class OrderItem {
 
     @Id
     private Long id;
+
+
+    @ManyToOne
+    @JoinColumn
+    private Ordering ordering;
 
 
 }
