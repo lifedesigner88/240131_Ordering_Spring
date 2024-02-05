@@ -25,7 +25,7 @@ public class TokenProviderJwt {
 //        claims: 클레임은 토큰 사용자에 대한 속성이나 데이터 포함, 주로 페이로드를 의미.
 
          log.info(secretKey);
-         log.info("dasdf" + expiration);
+         log.info("만료기간(분)" + expiration);
 
         Claims claims = Jwts.claims().setSubject(email);
         claims.put("role", role);

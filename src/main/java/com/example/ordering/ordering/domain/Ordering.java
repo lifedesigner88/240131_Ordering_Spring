@@ -2,9 +2,7 @@ package com.example.ordering.ordering.domain;
 
 import com.example.ordering.member.domain.Member;
 import com.example.ordering.orderItem.domain.OrderItem;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -13,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 @Entity
 @Getter
 @NoArgsConstructor
@@ -26,22 +25,19 @@ public class Ordering {
     private OrderStatus orderStatus = OrderStatus.ORDERED;
 
 
-
 //    Relation
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private Member member;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "ordering", cascade = CascadeType.PERSIST)
     private final List<OrderItem> orderItems = new ArrayList<>();
 
 
-
 //    Funtcion
-    @Builder
     public Ordering(Member member) {this.member = member;}
     public void cancleOrder(){this.orderStatus = OrderStatus.CANCELED;}
-
 
 
 //    Time

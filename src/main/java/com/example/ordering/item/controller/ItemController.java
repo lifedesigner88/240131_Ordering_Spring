@@ -46,13 +46,16 @@ public class ItemController {
         return service.SerchItems(SerchDto, pageable);
     }
 
+
     @GetMapping("/item/{id}/image")
-    public ResponseEntity<Resource> getImage(@PathVariable Long id){
+    public ResponseEntity<Resource> getImage(@PathVariable
+                                             Long id){
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(service.getImage(id));
 
     }
+
 
 
 //    Update
@@ -75,7 +78,8 @@ public class ItemController {
 //    Delete
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/item/{id}/delete")
-    public ResponseEntity<CommonResponse> Delete(@PathVariable("id") Long id) {
+    public ResponseEntity<CommonResponse> Delete(@PathVariable
+                                                 Long id) {
 
         return new ResponseEntity<>(
                 new CommonResponse(
