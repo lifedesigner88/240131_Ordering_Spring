@@ -42,20 +42,19 @@ public class ItemController {
 //    Read
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/items")
-    public List<ItemResDto> items(ItemSearchDto SerchDto, Pageable pageable){
+    public List<ItemResDto> items(ItemSearchDto SerchDto,
+                                  Pageable pageable){
         return service.getItems(SerchDto, pageable);
     }
 
-
     @GetMapping("/item/{id}/image")
-    public ResponseEntity<Resource> getImage(@PathVariable Long id){
+    public ResponseEntity<Resource> getImage(@PathVariable
+                                             Long id){
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(service.getImage(id));
 
     }
-
-
 
 //    Update
     @PreAuthorize("hasRole('ADMIN')")
@@ -77,7 +76,8 @@ public class ItemController {
 //    Delete
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/item/{id}/delete")
-    public ResponseEntity<CommonResponse> Delete(@PathVariable("id") Long id) {
+    public ResponseEntity<CommonResponse> Delete(@PathVariable
+                                                 Long id) {
 
         return new ResponseEntity<>(
                 new CommonResponse(

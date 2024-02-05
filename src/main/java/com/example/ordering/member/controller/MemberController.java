@@ -6,6 +6,8 @@ import com.example.ordering.member.dto.LoginReqDto;
 import com.example.ordering.member.dto.MemberCreateReqDto;
 import com.example.ordering.member.dto.MemberResponseDto;
 import com.example.ordering.member.service.MemberService;
+import com.example.ordering.ordering.dto.OrderResDto;
+import com.example.ordering.ordering.service.OrderService;
 import com.example.ordering.security.TokenProviderJwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,17 +24,23 @@ import java.util.Map;
 public class MemberController {
 
     private final MemberService service;
+    private final OrderService orderService;
     private final TokenProviderJwt tokenProvider;
 
     @Autowired
-    public MemberController( MemberService service,  TokenProviderJwt tokenProvider) {
+    public MemberController(MemberService service,
+                            OrderService orderService,
+                            TokenProviderJwt tokenProvider) {
         this.service = service;
+        this.orderService = orderService;
         this.tokenProvider = tokenProvider;
     }
 
-
+//    Create
     @PostMapping("/member/create")
-    public ResponseEntity<CommonResponse> memberCreate(@Valid @RequestBody MemberCreateReqDto dto){
+    public ResponseEntity<CommonResponse> memberCreate(@Valid
+                                                       @RequestBody
+                                                       MemberCreateReqDto dto){
         Member member = service.create(dto);
         return new ResponseEntity<>(
                 new CommonResponse(
@@ -44,31 +52,34 @@ public class MemberController {
         );
     }
 
+//    Read
     @PreAuthorize(value = "hasRole('ADMIN')")
     @GetMapping("/members")
     public List<MemberResponseDto> members(){
         return service.findAll();
     }
 
-    @PreAuthorize()
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @GetMapping("/member/{id}/orders")
-//    public MemberResponseDto findMemberById(@PathVariable Long id) {
-//
-//    }
-//    @PreAuthorize("hasRole('ADMIN') or #email == authentication.principal.username")
-//
-//    @GetMapping("/member/myorders")
-//
-
+    public List<OrderResDto> findOrderListByMemberId(@PathVariable
+                                                         Long id) {
+        return orderService.findByMemberId(id);
+    }
+    @GetMapping("/member/myorders")
+    public List<OrderResDto> findMyOrders(){
+        return orderService.findMyOrders();
+    }
 
     @GetMapping("/member/myInfo")
     public MemberResponseDto findMyInfo(){
         return service.findMyInfo();
     }
 
-
+//    Login
     @PostMapping("/doLogin")
-    public ResponseEntity<CommonResponse> memberLogin(@Valid @RequestBody LoginReqDto dto){
+    public ResponseEntity<CommonResponse> memberLogin(@Valid
+                                                      @RequestBody
+                                                      LoginReqDto dto){
         Member member = service.login(dto);
         String jwtToken = tokenProvider.createdToken(
                 member.getEmail(),

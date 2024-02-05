@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -43,7 +44,7 @@ public class Member {
 //    Relation
     @ToString.Exclude
     @OneToMany(mappedBy = "member")
-    private List<Ordering> orderings;
+    private List<Ordering> orderings = new ArrayList<>();
 
     public static Member toEntity(MemberCreateReqDto member, String Password){
         Address address = new Address(

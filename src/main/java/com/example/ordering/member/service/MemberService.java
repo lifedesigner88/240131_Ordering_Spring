@@ -5,6 +5,7 @@ import com.example.ordering.member.dto.LoginReqDto;
 import com.example.ordering.member.dto.MemberCreateReqDto;
 import com.example.ordering.member.dto.MemberResponseDto;
 import com.example.ordering.member.repository.MemberRepository;
+import com.example.ordering.ordering.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,11 +20,16 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class MemberService {
+
+    private final OrderRepository orderRepo;
     private final MemberRepository memberRepo;
     private final PasswordEncoder passEnco;
 
     @Autowired
-    public MemberService(MemberRepository memberRepo, PasswordEncoder passEnco) {
+    public MemberService(OrderRepository orderRepo,
+                         MemberRepository memberRepo,
+                         PasswordEncoder passEnco) {
+        this.orderRepo = orderRepo;
         this.memberRepo = memberRepo;
         this.passEnco = passEnco;
     }
@@ -54,4 +60,7 @@ public class MemberService {
             throw new IllegalArgumentException("비밀번호 불일치");
         return member;
     }
+
+
+
 }
