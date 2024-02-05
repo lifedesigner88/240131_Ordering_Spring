@@ -50,13 +50,15 @@ public class MemberController {
         return service.findAll();
     }
 
-
-//    @GetMapping("/member/{id}/orders")
+    @PreAuthorize()
+    @GetMapping("/member/{id}/orders")
 //    public MemberResponseDto findMemberById(@PathVariable Long id) {
 //
 //    }
+//    @PreAuthorize("hasRole('ADMIN') or #email == authentication.principal.username")
 //
 //    @GetMapping("/member/myorders")
+//
 
 
     @GetMapping("/member/myInfo")
