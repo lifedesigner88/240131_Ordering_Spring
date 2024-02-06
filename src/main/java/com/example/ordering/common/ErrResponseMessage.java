@@ -11,8 +11,8 @@ public class ErrResponseMessage {
         makeMessage(HttpStatus status, String message) {
         Map<String, Object> map = new HashMap<>();
         map.put("status", Integer.toString(status.value()));
-        map.put("status message", status.getReasonPhrase());
-        map.put("error message", message);
+        map.put("status_message", status.getReasonPhrase());
+        map.put("error_message", message);
         return new ResponseEntity<>(map, status);
     }
 }

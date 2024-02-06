@@ -23,7 +23,7 @@ public class InitialDataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if(memberRepo.findByEmail("admin@test.com").isEmpty()){
+        if(memberRepo.findByEmail("root@admin").isEmpty()){
             Member admin =  Member.builder()
                     .name("root")
                     .email("root@admin")
