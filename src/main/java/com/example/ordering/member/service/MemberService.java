@@ -5,7 +5,6 @@ import com.example.ordering.member.dto.LoginReqDto;
 import com.example.ordering.member.dto.MemberCreateReqDto;
 import com.example.ordering.member.dto.MemberResponseDto;
 import com.example.ordering.member.repository.MemberRepository;
-import com.example.ordering.ordering.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,21 +14,19 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class MemberService {
 
-    private final OrderRepository orderRepo;
     private final MemberRepository memberRepo;
     private final PasswordEncoder passEnco;
 
     @Autowired
-    public MemberService(OrderRepository orderRepo,
-                         MemberRepository memberRepo,
+    public MemberService(MemberRepository memberRepo,
                          PasswordEncoder passEnco) {
-        this.orderRepo = orderRepo;
         this.memberRepo = memberRepo;
         this.passEnco = passEnco;
     }
@@ -49,6 +46,8 @@ public class MemberService {
     }
 
     public Member create(MemberCreateReqDto member) {
+        Optional<Member> mailCheck = memberRepo.findByEmail(member.getEmail());
+        if(mailCheck.isPresent()) throw new IllegalArgumentException("중복이메일 입니다.");
         return memberRepo.save (
                 Member.toEntity(member, passEnco.encode(member.getPassword())));
     }

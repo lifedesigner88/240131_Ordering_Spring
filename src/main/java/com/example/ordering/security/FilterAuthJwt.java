@@ -60,8 +60,9 @@ public class FilterAuthJwt extends GenericFilter {
                                 userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
+            filter.doFilter(req, res);
 
-        } catch (AuthenticationServiceException e) {
+        } catch (Exception e) {
             HttpServletResponse httpRes = (HttpServletResponse) res;
             httpRes.setStatus(HttpStatus.UNAUTHORIZED.value());
             httpRes.setContentType("application/json");
@@ -73,6 +74,5 @@ public class FilterAuthJwt extends GenericFilter {
                             ).toString()
                     );
         }
-        filter.doFilter(req, res);
     }
 }
