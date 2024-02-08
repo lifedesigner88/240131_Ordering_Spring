@@ -40,7 +40,6 @@ public class ItemController {
     }
 
 //    Read
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/items")
     public List<ItemResDto> items(ItemSearchDto SerchDto, Pageable pageable){
         return service.SerchItems(SerchDto, pageable);
