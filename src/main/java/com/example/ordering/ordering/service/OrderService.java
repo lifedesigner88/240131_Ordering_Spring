@@ -41,7 +41,7 @@ public class OrderService {
         this.itemRepo = itemRepo;
     }
 
-    public Ordering createOrder(OrderReqDto orderReqDto){
+    public Ordering createOrder(List<OrderReqDto> dots){
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         String email = authentication.getName();
@@ -56,7 +56,7 @@ public class OrderService {
         Ordering ordering = new Ordering(member);
         log.info("3. Order 출력" + ordering.toString());
 
-        for(OrderReqDto.OrderReqItemDto dto : orderReqDto.getOrderReqItemDtoList()){
+        for(OrderReqDto dto : dots){
             Item item = itemRepo.findById(dto.getItemId())
                     .orElseThrow(() -> new EntityNotFoundException("Item not found"));
             log.info("4. ITEM 출력" + item);

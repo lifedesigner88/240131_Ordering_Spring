@@ -25,10 +25,10 @@ public class OrderController {
 
 //    Create
     @PostMapping("/order/create")
-    public ResponseEntity<CommonResponse> createOrder(@RequestBody OrderReqDto dto) {
+    public ResponseEntity<CommonResponse> createOrder(@RequestBody List<OrderReqDto> dtos) {
         System.out.println("DTO TEST");
-        log.info(dto.toString());
-        Ordering ordering = service.createOrder(dto);
+        log.info(dtos.toString());
+        Ordering ordering = service.createOrder(dtos);
 
         return new ResponseEntity<>(
                 new CommonResponse(
