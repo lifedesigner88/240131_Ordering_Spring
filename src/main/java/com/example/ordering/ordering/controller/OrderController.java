@@ -26,8 +26,6 @@ public class OrderController {
 //    Create
     @PostMapping("/order/create")
     public ResponseEntity<CommonResponse> createOrder(@RequestBody List<OrderReqDto> dtos) {
-        System.out.println("DTO TEST");
-        log.info(dtos.toString());
         Ordering ordering = service.createOrder(dtos);
 
         return new ResponseEntity<>(
